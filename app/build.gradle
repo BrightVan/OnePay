@@ -9,8 +9,6 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
         manifestPlaceholders = [ // 配置给微信支付使用
                 APPLICATION_ID: applicationId,
         ]
@@ -25,14 +23,10 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    api 'com.android.support:appcompat-v7:28.0.0'
-    testImplementation 'junit:junit:4.12'
-    api project(':easypay')
-    api project(':unionpay')
-    api project(':wechatpay')
+    api 'androidx.appcompat:appcompat:1.1.0'
+    api project(':core')
+    api project(':union')
+    api project(':wechat')
     api project(':alipay')
 //    compile 'com.xgr.easypay:EasyPay:2.0.0'
 //    compile 'com.xgr.easypay:alipay:2.0.0'

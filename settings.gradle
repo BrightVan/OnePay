@@ -1,1 +1,1 @@
-include ':app', ':easypay', ':wechatpay', ':unionpay', ':alipay'
+include ':app', ':core', ':wechat', ':union', ':alipay'

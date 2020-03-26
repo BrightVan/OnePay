@@ -1,0 +1,18 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pay.one.wechat">
+
+    <application>
+        <activity
+            android:name="com.pay.one.wechat.activity.WXPayActivity"
+            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale|screenLayout|keyboardHidden"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:theme="@style/PayAgentActivityTheme" />
+        <activity-alias
+            android:name="${APPLICATION_ID}.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.pay.one.wechat.activity.WXPayActivity" />
+    </application>
+
+</manifest>
