@@ -23,7 +23,7 @@
 ```
 allprojects {
     repositories {
-        maven { url "https://raw.githubusercontent.com/BrightVan/OnePay/master" }
+        maven { url "https://raw.githubusercontent.com/BrightVan/OnePay/master/archives" }
     }
 }
 ```
