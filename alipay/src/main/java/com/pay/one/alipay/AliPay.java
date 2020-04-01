@@ -12,7 +12,6 @@ package com.pay.one.alipay;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 
 import com.alipay.sdk.app.PayTask;
 import com.pay.one.core.IPayResultHandler;
@@ -83,23 +82,23 @@ public class AliPay implements IPayStrategy<AliPayEntity> {
 
             if (payResult.resultCode == ResultHandler.CODE_SUCCESS) {
                 if (payCallback != null) {
-                    payCallback.success();
+                    payCallback.onSuccess();
                 }
             } else if (payResult.resultCode == ResultHandler.CODE_CANCEL) {
                 if (payCallback != null) {
-                    payCallback.cancel();
+                    payCallback.onCancel();
                 }
             } else {
                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                 if (payCallback != null) {
-                    payCallback.failed(resultHandler.map(payResult.resultCode));
+                    payCallback.onFailed(resultHandler.map(payResult.resultCode));
                 }
             }
         }
 
         @Override
         protected void onCancelled() {
-            payCallback.cancel();
+            payCallback.onCancel();
         }
 
         @Override

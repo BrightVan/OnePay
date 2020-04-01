@@ -1,6 +1,13 @@
 ### 简介
 > 支付接入，也没什么难得，平台做好了，调用即可。和原作者的代码相比，改动太多了，就不pull merge request了。
-
+> 银联的自己目前没用，就没怎么重构，暂不支持
+#### 和原项目相比：
+- 迁移至androidx
+- 去除大量无关资源和配置
+- 增加多语言支持
+- 优化错误处理
+- 支持混淆规则自动配置（依赖包已经包含了，接入时不需要处理）
+- 简化微信支付使用步骤
 
 ### 使用步骤一、 集成依赖库
 集成方式有以下两种，根据需要选择其中一种集成即可：
@@ -22,7 +29,7 @@ allprojects {
 ```
 
 #### 1) OnePay（必选）:
-> 注意：本步骤必须添加，因为该库是EasyPay基类库
+> 注意：本步骤必须添加，因为该库是OnePay基类库
 
 	implementation 'com.pay.one:core:1.0.0'
 
@@ -43,73 +50,40 @@ allprojects {
 
 远程依赖集成方式到此结束。
 
-#### 下载源码后作为module导入：
-
-#### 1) 集成基类依赖库（必选）：
-```
-implementation project(':easypay')
-```
-
-#### 2) 根据需要集成其他支付依赖库
-
-##### 1）微信支付集成（可选）：
-
-```
-implementation project(':wechatpay')
-```
-##### 2）支付宝集成（可选）：
-
-```
-implementation project(':alipay')
-```
-##### 3）银联支付集成（可选）：
-
-```
-implementation project(':unionpay')
-```
-下载源码作为Module导入集成方式到此结束。
-
 ------
 
 
 ### 使用步骤二、相关支付Api调用
 
-#### 微信支付（共两步）
-##### 1）配置
-在项目主App模块的build.gradle文件的android{}块->defaultConfig{}块中配置applicationId,具体如下：
-```
-        manifestPlaceholders = [
-                APPLICATION_ID: applicationId,
-        ]
-```
-##### 2）api调用
+#### 微信支付（共一步）
+
 ```
     private void wxpay(){
         //实例化微信支付策略
         WXPay wxPay = WXPay.getInstance();
         //构造微信订单实体。一般都是由服务端直接返回。
-        WXPayInfoImpli wxPayInfoImpli = new WXPayInfoImpli();
-        wxPayInfoImpli.setTimestamp("");
-        wxPayInfoImpli.setSign("");
-        wxPayInfoImpli.setPrepayId("");
-        wxPayInfoImpli.setPartnerid("");
-        wxPayInfoImpli.setAppid("");
-        wxPayInfoImpli.setNonceStr("");
-        wxPayInfoImpli.setPackageValue("");
+        WXPayEntity wxPayEntity = new WXPayEntity();
+        wxPayEntity.timestamp = ("");
+        wxPayEntity.sign = ("");
+        wxPayEntity.prepayId = ("");
+        wxPayEntity.partnerId = ("");
+        wxPayEntity.appId = ("");
+        wxPayEntity.nonceStr = ("");
+        wxPayEntity.packageValue = ("");
         //策略场景类调起支付方法开始支付，以及接收回调。
-        OnePay.pay(wxPay, this, wxPayInfoImpli, new IPayCallback() {
+        OnePay.pay(wxPay, this, wxPayEntity, new IPayCallback() {
             @Override
-            public void success() {
+            public void onSuccess() {
                 toast("支付成功");
             }
 
             @Override
-            public void failed(int code, String msg) {
+            public void onFailed(@NonNull String message) {
                 toast("支付失败");
             }
 
             @Override
-            public void cancel() {
+            public void onCancel() {
                 toast("支付取消");
             }
         });
@@ -123,22 +97,22 @@ implementation project(':unionpay')
         //实例化支付宝支付策略
         AliPay aliPay = new AliPay();
         //构造支付宝订单实体。一般都是由服务端直接返回。
-        AlipayInfoImpli alipayInfoImpli = new AlipayInfoImpli();
-        alipayInfoImpli.setOrderInfo("");
+        AliPayEntity aliPayEntity = new AliPayEntity();
+        aliPayEntity.orderInfo = ("");
         //策略场景类调起支付方法开始支付，以及接收回调。
-        OnePay.pay(aliPay, this, alipayInfoImpli, new IPayCallback() {
+        OnePay.pay(aliPay, this, aliPayEntity, new IPayCallback() {
             @Override
-            public void success() {
+            public void onSuccess() {
                 toast("支付成功");
             }
 
             @Override
-            public void failed(int code, String msg) {
+            public void onFailed(@NonNull String message) {
                 toast("支付失败");
             }
 
             @Override
-            public void cancel() {
+            public void onCancel() {
                 toast("支付取消");
             }
         });
@@ -152,23 +126,23 @@ implementation project(':unionpay')
         //实例化银联支付策略
         UnionPay unionPay = new UnionPay();
         //构造银联订单实体。一般都是由服务端直接返回。测试时可以用Mode.TEST,发布时用Mode.RELEASE。
-        UnionPayInfoImpli unionPayInfoImpli = new UnionPayInfoImpli();
-        unionPayInfoImpli.setTn("814144587819703061900");
-        unionPayInfoImpli.setMode(Mode.TEST);
+        UnionPayEntity unionPayEntity = new UnionPayEntity();
+        unionPayEntity.tn = ("625623784203097901200");
+        unionPayEntity.mode = (Mode.TEST);
         //策略场景类调起支付方法开始支付，以及接收回调。
-        OnePay.pay(unionPay, this, unionPayInfoImpli, new IPayCallback() {
+        OnePay.pay(unionPay, this, unionPayEntity, new IPayCallback() {
             @Override
-            public void success() {
+            public void onSuccess() {
                 toast("支付成功");
             }
 
             @Override
-            public void failed(int code, String msg) {
+            public void onFailed(@NonNull String message) {
                 toast("支付失败");
             }
 
             @Override
-            public void cancel() {
+            public void onCancel() {
                 toast("支付取消");
             }
         });
@@ -180,7 +154,6 @@ implementation project(':unionpay')
 ------
 
 ## 框架扩展新的支付平台（如美团、京东等其他支付）
-EasyPay从立项之初，就充分考虑了代码扩展性，启用策略模式，全部采用面向接口编程，遵循依赖倒置设计原则。从支付基类扩展出新的支付非常容易。仅需三步。下面给出参考步骤。更具体请参照项目中支付宝或者微信或者银联支付方式封装。
 ### 1) 支付订单信息类实现IPayInfo接口
 ```
 public class XXpayInfoImpli implements IPayInfo {

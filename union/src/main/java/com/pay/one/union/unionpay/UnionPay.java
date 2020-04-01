@@ -74,13 +74,13 @@ public class UnionPay implements IPayStrategy<UnionPayEntity> {
                     if (ret) {
                         // 验证通过后，显示支付结果
                         if (sPayCallback != null) {
-                            sPayCallback.success();
+                            sPayCallback.onSuccess();
                         }
                     } else {
                         // 验证不通过后的处理
                         // 建议通过商户后台查询支付结果
                         if (sPayCallback != null) {
-                            sPayCallback.failed(UnionPayErrCode.MESSAGE_VERIFY_ERROR);
+                            sPayCallback.onFailed(UnionPayErrCode.MESSAGE_VERIFY_ERROR);
                         }
                     }
                 } catch (JSONException e) {
@@ -90,16 +90,16 @@ public class UnionPay implements IPayStrategy<UnionPayEntity> {
                 // 未收到签名信息
                 // 建议通过商户后台查询支付结果
                 if (sPayCallback != null) {
-                    sPayCallback.success();
+                    sPayCallback.onSuccess();
                 }
             }
         } else if (str.equalsIgnoreCase(UnionPayErrCode.RESPONSE_MESSAGE_FAIL)) {
             if (sPayCallback != null) {
-                sPayCallback.failed(UnionPayErrCode.MESSAGE_FAIL);
+                sPayCallback.onFailed(UnionPayErrCode.MESSAGE_FAIL);
             }
         } else if (str.equalsIgnoreCase(UnionPayErrCode.RESPONSE_MESSAGE_CANCEL)) {
             if (sPayCallback != null) {
-                sPayCallback.cancel();
+                sPayCallback.onCancel();
             }
         }
         releaseUnionPayContext();

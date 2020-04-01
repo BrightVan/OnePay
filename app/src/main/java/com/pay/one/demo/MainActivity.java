@@ -2,6 +2,7 @@ package com.pay.one.demo;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -64,17 +65,17 @@ public class MainActivity extends AppCompatActivity {
         //策略场景类调起支付方法开始支付，以及接收回调。
         OnePay.pay(unionPay, this, unionPayEntity, new IPayCallback() {
             @Override
-            public void success() {
+            public void onSuccess() {
                 toast("支付成功");
             }
 
             @Override
-            public void failed(String message) {
+            public void onFailed(@NonNull String message) {
                 toast("支付失败");
             }
 
             @Override
-            public void cancel() {
+            public void onCancel() {
                 toast("支付取消");
             }
         });
@@ -95,17 +96,17 @@ public class MainActivity extends AppCompatActivity {
         //策略场景类调起支付方法开始支付，以及接收回调。
         OnePay.pay(wxPay, this, wxPayEntity, new IPayCallback() {
             @Override
-            public void success() {
+            public void onSuccess() {
                 toast("支付成功");
             }
 
             @Override
-            public void failed(String message) {
+            public void onFailed(@NonNull String message) {
                 toast("支付失败");
             }
 
             @Override
-            public void cancel() {
+            public void onCancel() {
                 toast("支付取消");
             }
         });
@@ -120,17 +121,17 @@ public class MainActivity extends AppCompatActivity {
         //策略场景类调起支付方法开始支付，以及接收回调。
         OnePay.pay(aliPay, this, aliPayEntity, new IPayCallback() {
             @Override
-            public void success() {
+            public void onSuccess() {
                 toast("支付成功");
             }
 
             @Override
-            public void failed(String message) {
+            public void onFailed(@NonNull String message) {
                 toast("支付失败");
             }
 
             @Override
-            public void cancel() {
+            public void onCancel() {
                 toast("支付取消");
             }
         });
