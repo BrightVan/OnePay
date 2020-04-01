@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <string name="pay_error_"></string>-->
+    <string name="pay_result_un_support">未安装微信或者安装的版本不支持！</string>
+    <string name="pay_result_illegal_params">支付订单参数不合法！</string>
 </resources>

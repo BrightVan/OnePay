@@ -14,8 +14,8 @@ import com.pay.one.core.IPayCallback;
 import com.pay.one.union.unionpay.Mode;
 import com.pay.one.union.unionpay.UnionPay;
 import com.pay.one.union.unionpay.UnionPayEntity;
-import com.pay.one.wechat.wxpay.WXPay;
-import com.pay.one.wechat.wxpay.WXPayEntity;
+import com.pay.one.wechat.WXPay;
+import com.pay.one.wechat.WXPayEntity;
 
 
 public class MainActivity extends AppCompatActivity {

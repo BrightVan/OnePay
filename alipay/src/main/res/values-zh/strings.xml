@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pay_result_handling">正在处理中…</string>
+    <string name="pay_result_repeat">重复请求</string>
+    <string name="pay_result_network">网络连接出错</string>
+    <string name="pay_result_unknown">支付结果未知</string>
+</resources>

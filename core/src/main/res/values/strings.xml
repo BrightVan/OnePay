@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pay_result_success">payment successful</string>
+    <string name="pay_result_failed">Payment failed</string>
+    <string name="pay_result_cancel">User cancels payment</string>
+</resources>

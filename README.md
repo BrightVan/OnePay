@@ -1,52 +1,3 @@
-## EasyPay(易支付)---- 一个便捷易用的 Android 平台聚合支付框架
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)
-
-[项目GitHub链接](https://github.com/kingofglory/EasyPay)
-
-## Vision (愿景)
-成为 Android 平台最便捷易用的支付框架
-
-------
-
-## Introduction（介绍）
-EasyPay(易支付)集成并高度封装了Android平台的微信支付，支付宝支付以银联支付。使用此库，开发者可以使用简单轻松方便的 Api 实现支付功能，大量节省集成配置时间。
-
-This is a library for Android Developers easily to use Alipay, WechatPay and UnionPay in Android project.
-
-------
-
-## Why （为什么有这个库）
-
-1. 支付平台众多。微信、支付宝、银联、京东、美团、百度等等，需要阅读各家文档，耗费大量时间精力。
-2. 集成步骤繁琐。集成过微信支付都知道，必须在包名下配置 ${applicationId}.wxapi.WXPayEntryActivity。。。
-3. Api 调用方式不一致。同样的功能，代码差异很大，增加理解成本。
-4. 支付结果接收逻辑分散。调用方法与接受结果代码不在同一个地方，逻辑分散，可读性和可维护性差。
-
-## Think deeply (思考与期望)
-
-我们能不能有一种多合一的库，可以省去纷繁的集成步骤，以统一的集成方式，统一的Api调用，统一的回调接收逻辑，同时兼具轻松扩展新的支付方式的能力，以满足支付功能需求。
-我给出的答案就是 EasyPay。EasyPay 已诞生三年，使用其实现支付功能的App超3000+，以其极简单的Api实现了多种支付功能得到开发者认可。
-
-## How (解决什么问题）
-
-1. EasyPay 用巧妙方式省去了微信支付必须配置wxapi.WXPayActivity的步骤，在客户端甚至你都不需要配置微信AppId
-2. EasyPay 分别封装了微信支付、支付宝支付、银联支付，单独成库，按需集成，所有库集成均一句代码完成
-3. EasyPay 统一支付调用接口，统一支付结果接收回调，调用代码与接收结果代码集中在一起
-4. EasyPay 预留扩展其他支付方式接口
-5. EasyPay 甚至抽空用反射解决了银联SDK因持有静态Context导致的内存泄漏问题（该问题三年前我反映后六个月也没解决。。。，所以只有自己动手，丰衣足食）
-6. EasyPay 让你省出时间陪女朋友，哈哈哈哈哈哈（if 没有 那省出时间让你去找啊，还指望我给你new 一个对象啊。。。）
-
-有人会说，No Picture, you say a XX。OK, 明白的，安排！
-## Screenshot（支付效果图）
-
-![screenshot.gif](https://github.com/kingofglory/EasyPay/blob/master/screensshot/screenshot.gif)
-
-------
-
-## Usage（使用）
-使用步骤非常简单，总共两步：1.集成依赖库；2.相关支付Api调用。
-
 ### 使用步骤一、 集成依赖库
 集成方式有以下两种，根据需要选择其中一种集成即可：
 
@@ -57,32 +8,39 @@ This is a library for Android Developers easily to use Alipay, WechatPay and Uni
 
 在Project中主App模块中的build.gradle的dependencies块中添加以下依赖：
 
+#### 0) 添加仓库:
+allprojects {
+    repositories {
+        maven { url "https://raw.githubusercontent.com/BrightVan/OnePay/master" }
+    }
+}
+
 #### 1) EasyPay支付基类库（必选）:
 > 注意：本步骤必须添加，因为该库是EasyPay基类库
 
-	implementation 'com.xgr.easypay:EasyPay:2.0.0'
+	implementation 'com.pay.one:core:1.0.0'
 
 #### 2) 根据需要集成微信支付、支付宝支付、银联支付
 > 注意：以下三个库可根据实际需要增删
 
 ##### 1）微信支付集成（可选）：
 
-    implementation 'com.xgr.easypay:wechatpay:2.0.0'
+    implementation 'com.pay.one:wechat:1.0.0'
 
 ##### 2）支付宝支付集成（可选）：
 
-    implementation 'com.xgr.easypay:alipay:2.0.0'
+    implementation 'com.pay.one:alipay:1.0.0'
 
 ##### 3）银联支付集成（可选）：
 
-    implementation 'com.xgr.easypay:unionpay:2.0.0'
+    implementation 'com.pay.one:union:1.0.0'
 
 远程依赖集成方式到此结束。
 
 #### 下载源码后作为module导入：
 
 #### 1) 集成基类依赖库（必选）：
-```java
+```
 implementation project(':easypay')
 ```
 
@@ -90,17 +48,17 @@ implementation project(':easypay')
 
 ##### 1）微信支付集成（可选）：
 
-```java
+```
 implementation project(':wechatpay')
 ```
 ##### 2）支付宝集成（可选）：
 
-```java
+```
 implementation project(':alipay')
 ```
 ##### 3）银联支付集成（可选）：
 
-```java
+```
 implementation project(':unionpay')
 ```
 下载源码作为Module导入集成方式到此结束。
@@ -113,13 +71,13 @@ implementation project(':unionpay')
 #### 微信支付（共两步）
 ##### 1）配置
 在项目主App模块的build.gradle文件的android{}块->defaultConfig{}块中配置applicationId,具体如下：
-```java
+```
         manifestPlaceholders = [
                 APPLICATION_ID: applicationId,
         ]
 ```
 ##### 2）api调用
-``` java
+```
     private void wxpay(){
         //实例化微信支付策略
         WXPay wxPay = WXPay.getInstance();
@@ -133,7 +91,7 @@ implementation project(':unionpay')
         wxPayInfoImpli.setNonceStr("");
         wxPayInfoImpli.setPackageValue("");
         //策略场景类调起支付方法开始支付，以及接收回调。
-        EasyPay.pay(wxPay, this, wxPayInfoImpli, new IPayCallback() {
+        OnePay.pay(wxPay, this, wxPayInfoImpli, new IPayCallback() {
             @Override
             public void success() {
                 toast("支付成功");
@@ -154,7 +112,7 @@ implementation project(':unionpay')
 微信支付到此结束
 
 #### 支付宝支付（共一步）
-``` java
+```
     private void alipay(){
         //实例化支付宝支付策略
         AliPay aliPay = new AliPay();
@@ -162,7 +120,7 @@ implementation project(':unionpay')
         AlipayInfoImpli alipayInfoImpli = new AlipayInfoImpli();
         alipayInfoImpli.setOrderInfo("");
         //策略场景类调起支付方法开始支付，以及接收回调。
-        EasyPay.pay(aliPay, this, alipayInfoImpli, new IPayCallback() {
+        OnePay.pay(aliPay, this, alipayInfoImpli, new IPayCallback() {
             @Override
             public void success() {
                 toast("支付成功");
@@ -183,7 +141,7 @@ implementation project(':unionpay')
 支付宝支付到此结束
 
 #### 银联支付（共一步）
-``` java
+```
     private void unionpay(){
         //实例化银联支付策略
         UnionPay unionPay = new UnionPay();
@@ -192,7 +150,7 @@ implementation project(':unionpay')
         unionPayInfoImpli.setTn("814144587819703061900");
         unionPayInfoImpli.setMode(Mode.TEST);
         //策略场景类调起支付方法开始支付，以及接收回调。
-        EasyPay.pay(unionPay, this, unionPayInfoImpli, new IPayCallback() {
+        OnePay.pay(unionPay, this, unionPayInfoImpli, new IPayCallback() {
             @Override
             public void success() {
                 toast("支付成功");
@@ -215,41 +173,10 @@ implementation project(':unionpay')
 
 ------
 
-## 项目实现介绍
-易支付编码实现遵循设计模式六大原则，并且使用了单例以及策略模式来实现整个库,扩展性良好,可以轻松扩展其他支付方式。
-
-``` java
-├── activity
-│   ├── UnionPayAssistActivity.java     //银联辅助Activity，负责调起银联支付接口以及接收回调。客户端无需关心。
-│   └── WXPayEntryBaseActivity.java     //微信支付回调Activity封装。客户端需继承该Activity并实现getAppId()方法。
-├── alipay
-│   ├── AliPay.java                     //支付宝支付api封装，实现了IPayStrategy接口
-│   ├── AlipayInfoImpli.java
-│   └── AliPayResult.java
-│   └── ResultCode.java
-├── base
-│   ├── IPayInfo.java                   //易支付支付信息基类接口
-│   └── IPayStrategy.java               //易支付支付策略基类接口
-├── callback
-│   └── IPayCallback.java               //易支付统一回调接口
-├── EasyPay.java                        //易支付场景类，客户端调用者
-├── unionpay
-│   ├── Mode.java
-│   ├── UnionPay.java                   //银联支付api封装，，实现了IPayStrategy接口
-│   └── UnionPayInfoImpli.java
-│   └── UnionPayErrCode.java
-└── wxpay
-      ├── WXPay.java                      //微信支付api封装，实现了IPayStrategy接口
-      └── WXPayInfoImpli.java
-      └── WXErrCodeEx.java
-
-```
-------
-
 ## 框架扩展新的支付平台（如美团、京东等其他支付）
 EasyPay从立项之初，就充分考虑了代码扩展性，启用策略模式，全部采用面向接口编程，遵循依赖倒置设计原则。从支付基类扩展出新的支付非常容易。仅需三步。下面给出参考步骤。更具体请参照项目中支付宝或者微信或者银联支付方式封装。
 ### 1) 支付订单信息类实现IPayInfo接口
-```java
+```
 public class XXpayInfoImpli implements IPayInfo {
     public xxType xxField = xxx;
     public yyTYpe xxFiled = yyy;
@@ -258,7 +185,7 @@ public class XXpayInfoImpli implements IPayInfo {
 ```
 ### 2) 支付策略类实现IPayStrategy。
 将第一步中支付实体类传入泛型。支付策略的初衷是将某种支付所有操作都进行集中封装，凡是业务需要用到该支付的地方，都调用这个类即可。
-```java
+```
 public class XXPay implements IPayStrategy<XXpayInfoImpli> {
     private AlipayInfoImpli alipayInfoImpli;
     private static IPayCallback sPayCallback;
@@ -276,7 +203,7 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 完成上述两步后，根据业务在需要地方调用即可，需要注意是当某支付平台支付回调比较分散时，可在对应地方将调用转发给上述支付类即可。这样，可以将逻辑集中到一个类处理。如不理解这段话，可以看银联支付UnionPayAssistActivity中的onActivityResult()方法，就将逻辑转给 UnionPay.handleResult(this,data)处理了。
 
 ### 3）调用Api
-```java
+```
         //实例化支付策略
         XXpay xxPay = new XXPay();
         //构造支付宝订单实体。一般都是由服务端直接返回。
@@ -284,7 +211,7 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
         xxpayInfoImpli.setXXFiled();
         ...
         //策略场景类调起支付方法开始支付，以及接收回调。
-        EasyPay.pay(xxPay, this, xxpayInfoImpli, new IPayCallback() {
+        OnePay.pay(xxPay, this, xxpayInfoImpli, new IPayCallback() {
             @Override
             public void success() {
                 toast("支付成功");
@@ -306,54 +233,22 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 ------
 
 ## (ChangeLog) 更新日志
-#### v2.0.1 更新 （2020/01/18)
-1. Fixed issue [Kotlin项目中调用支付回调失败时Msg为空会报错](https://github.com/kingofglory/EasyPay/issues/4)
-2. 将支付宝依赖库从impletation引用方式改为 api 引用。以便在库外部也可以引用相关类。
-3. 添加微信和支付宝混淆配置。
-
-#### v2.0.0更新(2019/10/27)
-1. 极限地精简微信支付集成和使用步骤，并更新微信支付SDK
-2. 更新支付宝SDK
-3. 更新银联SDK
-4. 支付回调fail方法返回code和message
-
+#### 1.0.0
+- 更新微信支付/支付宝支付SDK
+- 移除无关资源文件和配置文件
+- 重构项目
+- 结果处理，增加多语言支持
+- 优化结果错误处理
+- 简化微信支付接入，不需要继承某个Activity 或是 配置回调
 ------
 
 ## 联系我
 
-#### 1) 有问题提[Issues](https://github.com/kingofglory/EasyPay/issues)。欢迎大家交流想法。
+#### 1) 有问题提[Issues](https://github.com/BrightVan/OnePay/issues)。欢迎大家交流想法。
 
-#### 2) 邮箱联系(Email : kingofglory@yeah.net)
-
-#### 3) 限时免费加QQ群（群号：797559567）
+#### 2) 邮箱联系(Email : bright.van#qq.com)
 
 感谢大家，希望一起起步。
 
 ------
 
-## License
-
-	MIT License
-
-	
-	Copyright (c) 2017 kingofglory
-	
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-
-	
-	The above copyright notice and this permission notice shall be included in all
-	copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-	SOFTWARE.

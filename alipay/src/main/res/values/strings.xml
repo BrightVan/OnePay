@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pay_result_handling">Processing …</string>
+    <string name="pay_result_repeat">Duplicate request</string>
+    <string name="pay_result_network">Network connection error</string>
+    <string name="pay_result_unknown">Unknown payment result</string>
+</resources>

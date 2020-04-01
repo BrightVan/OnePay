@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pay_result_un_support">WeChat is not installed or the installed version is not supported!</string>
+    <string name="pay_result_illegal_params">Payment order parameters are illegal!</string>
+</resources>

@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.alipay.sdk.app.PayTask;
+import com.pay.one.core.IPayResultHandler;
 import com.pay.one.core.IPayStrategy;
 import com.pay.one.core.IPayCallback;
 
@@ -45,6 +46,7 @@ public class AliPay implements IPayStrategy<AliPayEntity> {
         // 必须异步调用
         Thread payThread = new Thread(payRunnable);
         payThread.start();*/
+        //上面是官网demo
         AliPayTask aliPayTask = new AliPayTask(activity, payCallback);
         aliPayTask.execute(payInfo.orderInfo);
     }
@@ -52,10 +54,12 @@ public class AliPay implements IPayStrategy<AliPayEntity> {
     static class AliPayTask extends AsyncTask<String, Void, Map<String, String>> {
         private WeakReference<Activity> activityWeakReference;
         private IPayCallback payCallback;
+        private IPayResultHandler resultHandler;
 
         AliPayTask(Activity activity, IPayCallback payCallback) {
             activityWeakReference = new WeakReference<>(activity);
             this.payCallback = payCallback;
+            resultHandler = new ResultHandler(activity.getApplicationContext());
         }
 
         @Override
@@ -75,22 +79,20 @@ public class AliPay implements IPayStrategy<AliPayEntity> {
         protected void onPostExecute(Map<String, String> result) {
             AliPayResult payResult = new AliPayResult(result);
 
-            String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+            String resultInfo = payResult.result;// 同步返回需要验证的信息
 
-            String resultStatus = payResult.getResultStatus();
-
-            if (TextUtils.equals(resultStatus, ResultCode.CODE_SUCCESS)) {
+            if (payResult.resultCode == ResultHandler.CODE_SUCCESS) {
                 if (payCallback != null) {
                     payCallback.success();
                 }
-            } else if (TextUtils.equals(resultStatus, ResultCode.CODE_CANCEL)) {
+            } else if (payResult.resultCode == ResultHandler.CODE_CANCEL) {
                 if (payCallback != null) {
                     payCallback.cancel();
                 }
             } else {
                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                 if (payCallback != null) {
-                    payCallback.failed(ResultCode.getTextByCode(resultStatus));
+                    payCallback.failed(resultHandler.map(payResult.resultCode));
                 }
             }
         }

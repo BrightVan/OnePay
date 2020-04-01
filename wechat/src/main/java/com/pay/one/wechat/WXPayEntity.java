@@ -8,7 +8,7 @@
  **
  **------------------------------------------------------------------------------
  */
-package com.pay.one.wechat.wxpay;
+package com.pay.one.wechat;
 
 
 import android.text.TextUtils;

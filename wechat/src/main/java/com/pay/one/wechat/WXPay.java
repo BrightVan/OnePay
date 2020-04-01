@@ -8,11 +8,12 @@
  **
  **------------------------------------------------------------------------------
  */
-package com.pay.one.wechat.wxpay;
+package com.pay.one.wechat;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 
+import com.pay.one.core.IPayResultHandler;
 import com.tencent.mm.opensdk.constants.Build;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -33,17 +34,18 @@ import com.pay.one.core.IPayCallback;
 public class WXPay implements IPayStrategy<WXPayEntity> {
     private static WXPay mWXPay;
     private WXPayEntity payInfoEntity;
-    private  IPayCallback sPayCallback;
+    private IPayCallback sPayCallback;
     private IWXAPI mWXApi;
+    private IPayResultHandler resultHandler;
 
-    private WXPay(){
+    private WXPay() {
     }
 
     //这里之所以单利模式，是为了
-    public static WXPay getInstance(){
-        if(mWXPay == null){
-            synchronized (WXPay.class){
-                if(mWXPay == null) {
+    public static WXPay getInstance() {
+        if (mWXPay == null) {
+            synchronized (WXPay.class) {
+                if (mWXPay == null) {
                     mWXPay = new WXPay();
                 }
             }
@@ -59,25 +61,28 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
     public void pay(Activity activity, WXPayEntity payInfo, IPayCallback payCallback) {
         this.payInfoEntity = payInfo;
         sPayCallback = payCallback;
+        resultHandler = new ResultHandler(activity.getApplicationContext());
 
         if (payInfoEntity == null || payInfoEntity.isInvalid()) {
             if (payCallback != null) {
-                payCallback.failed(WXErrCodeEx.getMessageByCode(WXErrCodeEx.CODE_ILLEGAL_ARGURE));
+                payCallback.failed(resultHandler.map(ResultHandler.CODE_ILLEGAL_PARAMS));
             }
             return;
         }
 
-        if(mWXApi==null){
+        if (mWXApi == null) {
             mWXApi = WXAPIFactory.createWXAPI(activity.getApplicationContext(), payInfoEntity.appId);
-            mWXApi.registerApp(payInfoEntity.appId);
+            //mWXApi.registerApp(payInfoEntity.appId);
         }
 
         if (!check()) {
             if (payCallback != null) {
-                payCallback.failed(WXErrCodeEx.getMessageByCode(WXErrCodeEx.CODE_UNSUPPORT));
+                payCallback.failed(resultHandler.map(ResultHandler.CODE_UN_SUPPORT));
             }
             return;
         }
+        //启动没有界面的activity 用于接收微信回调
+        activity.startActivity(new Intent(activity, WXPayActivity.class));
 
         PayReq req = new PayReq();
         req.appId = payInfoEntity.appId;

@@ -1,4 +1,4 @@
-package com.pay.one.wechat.activity;
+package com.pay.one.wechat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.pay.one.wechat.wxpay.WXPay;
+import com.pay.one.wechat.WXPay;
 
 /**
  * 在调用方项目的 包名.wxapi.WXPayEntryActivity类直接继续本类，并在AndroidManifest.xml中声明即可。
