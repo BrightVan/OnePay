@@ -1,3 +1,7 @@
+### 简介
+> 支付接入，也没什么难得，平台做好了，调用即可。和原作者的代码相比，改动太多了，就不pull merge request了。
+
+
 ### 使用步骤一、 集成依赖库
 集成方式有以下两种，根据需要选择其中一种集成即可：
 
@@ -9,13 +13,15 @@
 在Project中主App模块中的build.gradle的dependencies块中添加以下依赖：
 
 #### 0) 添加仓库:
+```
 allprojects {
     repositories {
         maven { url "https://raw.githubusercontent.com/BrightVan/OnePay/master" }
     }
 }
+```
 
-#### 1) EasyPay支付基类库（必选）:
+#### 1) OnePay（必选）:
 > 注意：本步骤必须添加，因为该库是EasyPay基类库
 
 	implementation 'com.pay.one:core:1.0.0'
