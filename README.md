@@ -27,26 +27,26 @@ allprojects {
     }
 }
 ```
-
+> 最新版：0.0.9
 #### 1) OnePay（必选）:
 > 注意：本步骤必须添加，因为该库是OnePay基类库
 
-	implementation 'com.pay.one:core:0.0.8'
+	implementation 'com.pay.one:core:version'
 
 #### 2) 根据需要集成微信支付、支付宝支付、银联支付
 > 注意：以下三个库可根据实际需要增删
 
 ##### 1）微信支付集成（可选）：
 
-    implementation 'com.pay.one:wechat:1.0.0'
+    implementation 'com.pay.one:wechat:version'
 
 ##### 2）支付宝支付集成（可选）：
 
-    implementation 'com.pay.one:alipay:1.0.0'
+    implementation 'com.pay.one:alipay:version'
 
 ##### 3）银联支付集成（可选）：
 
-    implementation 'com.pay.one:union:1.0.0'
+    implementation 'com.pay.one:union:version'
 
 远程依赖集成方式到此结束。
 
@@ -216,7 +216,7 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 ------
 
 ## (ChangeLog) 更新日志
-#### 1.0.0
+#### 0.0.9
 - 更新微信支付/支付宝支付SDK
 - 移除无关资源文件和配置文件
 - 重构项目
