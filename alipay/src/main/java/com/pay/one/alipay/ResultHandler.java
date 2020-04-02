@@ -2,7 +2,6 @@ package com.pay.one.alipay;
 
 import android.content.Context;
 
-import com.pay.one.alipay.R;
 import com.pay.one.core.IPayResultHandler;
 
 /**
@@ -24,6 +23,7 @@ class ResultHandler extends IPayResultHandler {
     ResultHandler(Context appContext) {
         super(appContext);
     }
+
 
     @Override
     protected String handle(int code) {

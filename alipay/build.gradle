@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'maven'
+
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
@@ -19,9 +21,13 @@ android {
     }
 }
 
+
+
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    api files('libs/alipaySdk-15.7.4-20200228192319-noUtdid.aar')
+    api fileTree(include: ['*.aar'], dir: 'libs')
+    compileOnly 'androidx.annotation:annotation:1.1.0'
+    //compileOnly 'androidx.appcompat:appcompat:1.1.0'
+    //api files('libs/alipaySdk-15.7.4-20200228192319-noUtdid.aar')
     compileOnly project(':core')
 }
 
@@ -30,9 +36,18 @@ uploadArchives {
         def deployPath = new File(project.rootDir.toString(), "/archives")
         repository(url: "file://${deployPath.absolutePath}")
         pom.project {
-            groupId "com.pay.one"
+            groupId rootProject.ext._groupId
             artifactId "alipay"
-            version "1.0.0"
+            version rootProject.ext._publishVersion
         }
     }
+}
+
+publish {
+    userOrg = rootProject.ext._userOrg
+    groupId = rootProject.ext._groupId
+    artifactId = 'alipay'
+    publishVersion = rootProject.ext._publishVersion
+    desc = rootProject.ext._desc
+    website = rootProject.ext._website
 }

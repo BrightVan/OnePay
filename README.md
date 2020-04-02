@@ -31,7 +31,7 @@ allprojects {
 #### 1) OnePay（必选）:
 > 注意：本步骤必须添加，因为该库是OnePay基类库
 
-	implementation 'com.pay.one:core:1.0.0'
+	implementation 'com.pay.one:core:0.0.8'
 
 #### 2) 根据需要集成微信支付、支付宝支付、银联支付
 > 注意：以下三个库可根据实际需要增删
@@ -91,7 +91,11 @@ allprojects {
 ```
 微信支付到此结束
 
-#### 支付宝支付（共一步）
+#### 支付宝支付（共2步）
+>由于支付宝的SDK没有提供云端仓库的依赖方式，只能手动下载SDK文件依赖。且SDK为aar文件。
+> maven打包不进去，所以需要手动下载支付宝sdk到项目进行依赖。
+> 你可以到支付宝开放平台自己下载最新版，也可以在本项目alipay/libs目录下载
+
 ```
     private void alipay(){
         //实例化支付宝支付策略

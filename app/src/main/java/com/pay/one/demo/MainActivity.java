@@ -12,9 +12,9 @@ import com.pay.one.alipay.AliPay;
 import com.pay.one.alipay.AliPayEntity;
 import com.pay.one.core.OnePay;
 import com.pay.one.core.IPayCallback;
-import com.pay.one.union.unionpay.Mode;
-import com.pay.one.union.unionpay.UnionPay;
-import com.pay.one.union.unionpay.UnionPayEntity;
+import com.pay.one.union.Mode;
+import com.pay.one.union.UnionPay;
+import com.pay.one.union.UnionPayEntity;
 import com.pay.one.wechat.WXPay;
 import com.pay.one.wechat.WXPayEntity;
 

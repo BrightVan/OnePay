@@ -5,8 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.Map;
-
 /**
  * description: none
  * author: bright.van@qq.com

@@ -2,6 +2,8 @@ package com.pay.one.wechat;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import com.pay.one.core.IPayResultHandler;
 
 /**
@@ -19,6 +21,7 @@ class ResultHandler extends IPayResultHandler {
         super(appContext);
     }
 
+    @Nullable
     @Override
     protected String handle(int code) {
         switch (code) {

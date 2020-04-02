@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pay_result_verify_error">验证未通过，请查询商户后台！</string>
+</resources>

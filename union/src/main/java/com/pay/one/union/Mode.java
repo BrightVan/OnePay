@@ -1,4 +1,4 @@
-package com.pay.one.union.unionpay;
+package com.pay.one.union;
 
 public enum Mode {
     RELEASE("00"),

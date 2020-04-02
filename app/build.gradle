@@ -9,9 +9,6 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [ // 配置给微信支付使用
-                APPLICATION_ID: applicationId,
-        ]
     }
     buildTypes {
         release {
@@ -28,8 +25,8 @@ dependencies {
     api project(':union')
     api project(':wechat')
     api project(':alipay')
-//    compile 'com.xgr.easypay:EasyPay:2.0.0'
-//    compile 'com.xgr.easypay:alipay:2.0.0'
-//    compile 'com.xgr.easypay:unionpay:2.0.0'
-//    compile 'com.xgr.easypay:wechatpay:2.0.0'
+    /*compile 'com.xgr.easypay:EasyPay:2.0.1'
+    compile 'com.xgr.easypay:alipay:2.0.1'
+    compile 'com.xgr.easypay:unionpay:2.0.0'
+    compile 'com.xgr.easypay:wechatpay:2.0.1'*/
 }

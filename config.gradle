@@ -1,3 +1,11 @@
-ext{
+ext {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    _userOrg = properties.getProperty("bintray_username")
+    _apiKey = properties.getProperty("bintray_api_key")
+    _groupId = "com.pay.one"
+    _publishVersion = "0.0.8"
+    _desc = "This is a library for Developers easily to use Alipay,WechatPay and UnionPay in Android project."
+    _website = "https://github.com/BrightVan/OnePay"
 
 }

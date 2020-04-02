@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'maven'
+
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
@@ -17,10 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    lintOptions {
-        abortOnError false
-    }
 }
 
 dependencies {
@@ -33,9 +31,19 @@ uploadArchives {
         def deployPath = new File(project.rootDir.toString(), "/archives")
         repository(url: "file://${deployPath.absolutePath}")
         pom.project {
-            groupId "com.pay.one"
+            groupId rootProject.ext._groupId
             artifactId "core"
-            version "1.0.0"
+            version rootProject.ext._publishVersion
         }
     }
 }
+
+publish {
+    userOrg = rootProject.ext._userOrg
+    groupId = rootProject.ext._groupId
+    artifactId = 'core'
+    publishVersion = rootProject.ext._publishVersion
+    desc = rootProject.ext._desc
+    website = rootProject.ext._website
+}
+

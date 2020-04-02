@@ -8,7 +8,7 @@
 **                         
 **------------------------------------------------------------------------------
 */
-package com.pay.one.union.unionpay;
+package com.pay.one.union;
 
 import android.os.Parcel;
 import android.os.Parcelable;

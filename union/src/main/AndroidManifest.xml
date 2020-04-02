@@ -34,7 +34,7 @@
             android:windowSoftInputMode="adjustResize" />
         <!-- unionpay end -->
         <activity
-            android:name="com.pay.one.union.activity.UnionPayAssistActivity"
+            android:name=".UnionPayAgentActivity"
             android:launchMode="singleTask"
             android:theme="@style/PayAgentActivityTheme" />
     </application>
