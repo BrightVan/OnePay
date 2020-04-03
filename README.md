@@ -27,26 +27,25 @@ allprojects {
     }
 }
 ```
-> 最新版：0.0.9
 #### 1) OnePay（必选）:
 > 注意：本步骤必须添加，因为该库是OnePay基类库
 
-	implementation 'com.pay.one:core:version'
+	implementation 'com.pay.one:core:0.0.9'
 
 #### 2) 根据需要集成微信支付、支付宝支付、银联支付
 > 注意：以下三个库可根据实际需要增删
 
 ##### 1）微信支付集成（可选）：
 
-    implementation 'com.pay.one:wechat:version'
+    implementation 'com.pay.one:wechat:0.0.9'
 
 ##### 2）支付宝支付集成（可选）：
 
-    implementation 'com.pay.one:alipay:version'
+    implementation 'com.pay.one:alipay:0.1.0'
 
 ##### 3）银联支付集成（可选）：
 
-    implementation 'com.pay.one:union:version'
+    implementation 'com.pay.one:union:0.0.9'
 
 远程依赖集成方式到此结束。
 

@@ -38,7 +38,7 @@ uploadArchives {
         pom.project {
             groupId rootProject.ext._groupId
             artifactId "alipay"
-            version rootProject.ext._publishVersion
+            version "0.1.0"
         }
     }
 }
