@@ -23,5 +23,4 @@ import com.pay.one.core.IPayEntity;
  */
 public class AliPayEntity implements IPayEntity {
     public String orderInfo;
-    public String orderId;
 }

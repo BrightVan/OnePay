@@ -37,7 +37,7 @@ allprojects {
 
 ##### 1）微信支付集成（可选）：
 
-    implementation 'com.pay.one:wechat:0.0.9'
+    implementation 'com.pay.one:wechat:0.1.0'
 
 ##### 2）支付宝支付集成（可选）：
 

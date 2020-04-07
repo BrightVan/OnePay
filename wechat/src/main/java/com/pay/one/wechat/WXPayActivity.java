@@ -13,7 +13,7 @@ import com.pay.one.wechat.WXPay;
 /**
  * 在调用方项目的 包名.wxapi.WXPayEntryActivity类直接继续本类，并在AndroidManifest.xml中声明即可。
  */
-public abstract class WXPayActivity extends Activity implements IWXAPIEventHandler {
+public class WXPayActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
