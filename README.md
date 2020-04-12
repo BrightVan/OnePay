@@ -30,7 +30,7 @@ allprojects {
 #### 1) OnePay（必选）:
 > 注意：本步骤必须添加，因为该库是OnePay基类库
 
-	implementation 'com.pay.one:core:0.0.9'
+	implementation 'com.pay.one:core:0.1.0'
 
 #### 2) 根据需要集成微信支付、支付宝支付、银联支付
 > 注意：以下三个库可根据实际需要增删
@@ -215,6 +215,10 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 ------
 
 ## (ChangeLog) 更新日志
+#### 0.1.0
+- 修复微信模块AgentActivity不能实例化问题
+- 修复core混淆配置错误问题
+
 #### 0.0.9
 - 更新微信支付/支付宝支付SDK
 - 移除无关资源文件和配置文件
