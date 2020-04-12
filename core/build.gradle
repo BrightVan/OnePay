@@ -33,7 +33,7 @@ uploadArchives {
         pom.project {
             groupId rootProject.ext._groupId
             artifactId "core"
-            version rootProject.ext._publishVersion
+            version "0.1.0"
         }
     }
 }
