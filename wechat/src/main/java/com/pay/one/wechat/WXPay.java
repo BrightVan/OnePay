@@ -123,4 +123,8 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
     private boolean check() {
         return mWXApi.isWXAppInstalled() && mWXApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
     }
+
+    public void releasePayCallback() {
+        sPayCallback = null;
+    }
 }
