@@ -1,1 +1,1 @@
--keep class * implements com.xgr.easypay.base.IPayInfo { <fields>; }
+-keep class * implements com.pay.one.core.IPayEntity { <fields>; }
