@@ -28,7 +28,7 @@ allprojects {
 //required - 必选
 implementation 'com.pay.one:core:0.1.2'
 //optional - 微信支付模块
-implementation 'com.pay.one:wechat:0.1.2'
+implementation 'com.pay.one:wechat:0.1.3'
 //optional - 支付宝模块
 implementation 'com.pay.one:alipay:0.1.0'
 //optional - 银联支付(未测试)
