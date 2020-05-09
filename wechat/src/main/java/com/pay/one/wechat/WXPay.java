@@ -11,7 +11,6 @@
 package com.pay.one.wechat;
 
 import android.app.Activity;
-import android.content.Intent;
 
 import com.pay.one.core.IPayResultHandler;
 import com.tencent.mm.opensdk.constants.Build;
@@ -82,7 +81,7 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
             return;
         }
         //启动没有界面的activity 用于接收微信回调
-        activity.startActivity(new Intent(activity, WXPayActivity.class));
+        //activity.startActivity(new Intent(activity, WXPayActivity.class));
 
         PayReq req = new PayReq();
         req.appId = payInfoEntity.appId;
@@ -113,7 +112,6 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
         } else {
             sPayCallback.onFailed(errorMsg);
         }
-
         sPayCallback = null;
     }
 
