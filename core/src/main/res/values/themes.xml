@@ -4,9 +4,13 @@
     <style name="PayAgentActivityTheme">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <!--类似于windowIsTranslucent-->
         <item name="android:windowDisablePreview">true</item>
+        <!---->
         <item name="android:windowIsFloating">false</item>
+        <!--背景是否变暗-->
         <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent
         </item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">
