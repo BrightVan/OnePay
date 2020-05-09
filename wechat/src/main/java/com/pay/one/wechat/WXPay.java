@@ -65,6 +65,7 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
         if (payInfoEntity == null || payInfoEntity.isInvalid()) {
             if (payCallback != null) {
                 payCallback.onFailed(resultHandler.map(ResultHandler.CODE_ILLEGAL_PARAMS));
+                sPayCallback = null;
             }
             return;
         }
@@ -77,6 +78,7 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
         if (!check()) {
             if (payCallback != null) {
                 payCallback.onFailed(resultHandler.map(ResultHandler.CODE_UN_SUPPORT));
+                sPayCallback = null;
             }
             return;
         }
@@ -102,7 +104,6 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
         if (sPayCallback == null) {
             return;
         }
-
         if (errorCode == BaseResp.ErrCode.ERR_OK) {
             sPayCallback.onSuccess();
         } else if (errorCode == BaseResp.ErrCode.ERR_COMM) {
@@ -120,9 +121,5 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
      */
     private boolean check() {
         return mWXApi.isWXAppInstalled() && mWXApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
-    }
-
-    public void releasePayCallback() {
-        sPayCallback = null;
     }
 }
