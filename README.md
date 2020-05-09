@@ -1,6 +1,6 @@
 ### 简介
 > 支付接入，也没什么难得，平台做好了，调用即可。和原作者的代码相比，改动太多了，就不pull merge request了。
-> 银联的自己目前没用，就没怎么重构，暂不支持
+> 银联的自己目前没用，就没怎么重构，暂不支持，目前是测试阶段，core，微信，支付宝模块自己都做了测试和验证。
 #### 和原项目相比：
 - 迁移至androidx
 - 去除大量无关资源和配置
@@ -10,10 +10,6 @@
 - 简化微信支付使用步骤
 
 ### 使用步骤一、 集成依赖库
-集成方式有以下两种，根据需要选择其中一种集成即可：
-
-**远程依赖库集成方式**  Or **下载源码作为Module导入集成方式**；
-
 
 #### 远程依赖库集成方式
 
@@ -27,35 +23,31 @@ allprojects {
     }
 }
 ```
-#### 1) OnePay（必选）:
-> 注意：本步骤必须添加，因为该库是OnePay基类库
-
-	implementation 'com.pay.one:core:0.1.1'
-
-#### 2) 根据需要集成微信支付、支付宝支付、银联支付
-> 注意：以下三个库可根据实际需要增删
-
-##### 1）微信支付集成（可选）：
-
-    implementation 'com.pay.one:wechat:0.1.1'
-
-##### 2）支付宝支付集成（可选）：
-
-    implementation 'com.pay.one:alipay:0.1.0'
-
-##### 3）银联支付集成（可选）：
-
-    implementation 'com.pay.one:union:0.0.9'
-
-远程依赖集成方式到此结束。
+#### 1) 配置依赖:
+```
+//required - 必选
+implementation 'com.pay.one:core:0.1.2'
+//optional - 微信支付模块
+implementation 'com.pay.one:wechat:0.1.2'
+//optional - 支付宝模块
+implementation 'com.pay.one:alipay:0.1.0'
+//optional - 银联支付(未测试)
+implementation 'com.pay.one:union:0.0.9'
+```
 
 ------
 
 
 ### 使用步骤二、相关支付Api调用
 
-#### 微信支付（共一步）
-
+#### 微信支付
+> 微信支付结果的回到，内部已做了封装，使用时不需要做任何处理。
+> 主要原理是使用"activity-alias"让微信可以正确回调Activity而改Activity位置不受限制。  
+> 对于自己做实现的同学，回调Activity由微信调用创建，而不要自己提前实例化，否则可能会无法回调。
+> 无法回调是因为生命周期的问题，具体可以自己看微信sdk源码。微信官方在onCreate和onNewIntent是
+> 有使用场景的。如果支付界面作为回调界面，你也可以在onResume里面，onWindowFocus里面
+> 因为提前实例化，onCreate已经调用过了，按照官方那样写只能回调onNewIntent,而onNewIntent可能
+> 不走，就会造成无法回调结果。
 ```
     private void wxpay(){
         //实例化微信支付策略
@@ -88,11 +80,10 @@ allprojects {
         });
     }
 ```
-微信支付到此结束
 
-#### 支付宝支付（共2步）
+#### 支付宝支付
 >由于支付宝的SDK没有提供云端仓库的依赖方式，只能手动下载SDK文件依赖。且SDK为aar文件。
-> maven打包不进去，所以需要手动下载支付宝sdk到项目进行依赖。
+> maven打包不进去（也可能我用的姿势不对），所以需要手动下载支付宝sdk到项目进行依赖。
 > 你可以到支付宝开放平台自己下载最新版，也可以在本项目alipay/libs目录下载
 
 ```
@@ -121,9 +112,8 @@ allprojects {
         });
     }
 ```
-支付宝支付到此结束
 
-#### 银联支付（共一步）
+#### 银联支付（未测试）
 ```
     private void unionpay(){
         //实例化银联支付策略
@@ -152,14 +142,12 @@ allprojects {
     }
 ```
 
-银联支付到此结束
-
 ------
 
 ## 框架扩展新的支付平台（如美团、京东等其他支付）
 ### 1) 支付订单信息类实现IPayInfo接口
 ```
-public class XXpayInfoImpli implements IPayInfo {
+public class XXpayInfoImpli implements IPayEntity {
     public xxType xxField = xxx;
     public yyTYpe xxFiled = yyy;
     ...other Field
@@ -215,10 +203,12 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 ------
 
 ## (ChangeLog) 更新日志
+#### 0.1.2
+- 修复微信模块支付结果不回调的问题
+- 修改core模块AgentActivity主题，windowCloseOnTouchOutside设为true
 #### 0.1.1
 - 修复微信模块添加releasePayCallback方法，防止内存泄露。
 - 修复core模块，混淆规则问题
-
 #### 0.1.0
 - 修复微信模块AgentActivity不能实例化问题
 - 修复core混淆配置错误问题
