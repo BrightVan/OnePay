@@ -1,19 +1,21 @@
 ### 简介
-> 支付接入，也没什么难得，平台做好了，调用即可。和原作者的代码相比，改动太多了，就不pull merge request了。
-> 银联的自己目前没用，就没怎么重构，暂不支持，目前是测试阶段，core，微信，支付宝模块自己都做了测试和验证。
+> 支付接入，其实也没什么工作量和难度，只不过国内有些平台的文档真的是一言难尽，会浪费些不必要的时间。和原作者的代码相比，改动太多了，就不push merge request了。
+> 银联的自己目前没用，就没怎么重构，暂不支持。目前是测试阶段，core，微信，支付宝模块自己都做了测试和验证。
 #### 和原项目相比：
 - 迁移至androidx
-- 去除大量无关资源和配置
+- 去除大量无关资源，减小依赖体积
+- 删除一些无用的默认配置（可能导致冲突和安全问题）
 - 增加多语言支持
 - 优化错误处理
-- 支持混淆规则自动配置（依赖包已经包含了，接入时不需要处理）
-- 简化微信支付使用步骤
+- 支持混淆规则自动配置（aar包已经包含了，直接依赖即可，无需单独配置混淆规则）
+- 极大的简化微信支付使用步骤（只需一步，无需配置回调Activity）
+- 解决微信支付可能内存泄露问题（由于用到了单例模式）
 
-### 使用步骤一、 集成依赖库
+### 一、 集成依赖库
 
 #### 远程依赖库集成方式
 
-在Project中主App模块中的build.gradle的dependencies块中添加以下依赖：
+在Project中主App模块中的build.gradle的dependencies块中添加以下仓库：
 
 #### 0) 添加仓库:
 ```
@@ -34,48 +36,39 @@ implementation 'com.pay.one:alipay:0.1.0'
 //optional - 银联支付(未测试)
 implementation 'com.pay.one:union:0.0.9'
 ```
-
 ------
 
 
-### 使用步骤二、相关支付Api调用
+### 二、相关支付Api调用
 
 #### 微信支付
-> 微信支付结果的回到，内部已做了封装，使用时不需要做任何处理。
-> 主要原理是使用"activity-alias"让微信可以正确回调Activity而改Activity位置不受限制。  
-> 对于自己做实现的同学，回调Activity由微信调用创建，而不要自己提前实例化，否则可能会无法回调。
-> 无法回调是因为生命周期的问题，具体可以自己看微信sdk源码。微信官方在onCreate和onNewIntent是
-> 有使用场景的。如果支付界面作为回调界面，你也可以在onResume里面，onWindowFocus里面
-> 因为提前实例化，onCreate已经调用过了，按照官方那样写只能回调onNewIntent,而onNewIntent可能
+> 微信支付结果的回调，内部已做了封装，使用时不需要做任何处理。
+> 主要原理是使用"activity-alias"让微信回调WXPayEntryActivity的位置不受限制，可以封装在依赖库中。
+> 对于自己做实现的同学，WXPayEntryActivity由微信调用并实例化，而不要自己提前实例化（调起微信支付和WXPayEntryActivity没有关系），否则可能会无法回调。
+> 遇到无法回调onResp，是因为生命周期方法没有回调到。微信官方在onCreate和onNewIntent是有使用场景的。
+> 如果支付界面作为回调界面，你也可以在onStart，onResume，onWindowFocus里面
+> 因为提前实例化，onCreate已经调用过了，如果按照官方那样写只能回调onNewIntent,而onNewIntent可能
 > 不走，就会造成无法回调结果。
 ```
     private void wxpay(){
-        //实例化微信支付策略
+        //获取服务端返回的订单实体类。
+        WXPayEntity wxPayEntity = getFromServer();
         WXPay wxPay = WXPay.getInstance();
-        //构造微信订单实体。一般都是由服务端直接返回。
-        WXPayEntity wxPayEntity = new WXPayEntity();
-        wxPayEntity.timestamp = ("");
-        wxPayEntity.sign = ("");
-        wxPayEntity.prepayId = ("");
-        wxPayEntity.partnerId = ("");
-        wxPayEntity.appId = ("");
-        wxPayEntity.nonceStr = ("");
-        wxPayEntity.packageValue = ("");
-        //策略场景类调起支付方法开始支付，以及接收回调。
-        OnePay.pay(wxPay, this, wxPayEntity, new IPayCallback() {
+        OnePay.pay(wxPay, PayActivity.this, wxPayEntity, new IPayCallback() {
             @Override
             public void onSuccess() {
-                toast("支付成功");
+                //根据orderId请求后台获取结果，官方不建议直接拿App返回成功就直接当做成功
+                //handlePayStatus();
             }
 
             @Override
             public void onFailed(@NonNull String message) {
-                toast("支付失败");
+                ToastUtils.showErrorToast(message);
             }
 
             @Override
             public void onCancel() {
-                toast("支付取消");
+                ToastUtils.showLongToast(R.string.pay_result_cancel);
             }
         });
     }
@@ -88,26 +81,25 @@ implementation 'com.pay.one:union:0.0.9'
 
 ```
     private void alipay(){
-        //实例化支付宝支付策略
         AliPay aliPay = new AliPay();
         //构造支付宝订单实体。一般都是由服务端直接返回。
         AliPayEntity aliPayEntity = new AliPayEntity();
         aliPayEntity.orderInfo = ("");
-        //策略场景类调起支付方法开始支付，以及接收回调。
-        OnePay.pay(aliPay, this, aliPayEntity, new IPayCallback() {
+        OnePay.pay(aliPay, PayActivity.this, aliPayEntity, new IPayCallback() {
             @Override
             public void onSuccess() {
-                toast("支付成功");
+                //根据orderId请求后台获取结果，官方不建议直接拿App返回成功就直接当做成功
+                //handlePayStatus();
             }
 
             @Override
             public void onFailed(@NonNull String message) {
-                toast("支付失败");
+                ToastUtils.showErrorToast(message);
             }
 
             @Override
             public void onCancel() {
-                toast("支付取消");
+                ToastUtils.showLongToast(R.string.pay_result_cancel);
             }
         });
     }
@@ -203,6 +195,8 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 ------
 
 ## (ChangeLog) 更新日志
+#### 0.1.3
+- 微信模块，内部处理内存泄露问题，移除releasePayCallback方法，无需手动处理。
 #### 0.1.2
 - 修复微信模块支付结果不回调的问题
 - 修改core模块AgentActivity主题，windowCloseOnTouchOutside设为true
@@ -224,11 +218,9 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 
 ## 联系我
 
-#### 1) 有问题提[Issues](https://github.com/BrightVan/OnePay/issues)。欢迎大家交流想法。
+#### 1) 有问题提[Issues](https://github.com/BrightVan/OnePay/issues)。
 
 #### 2) 邮箱联系(Email : bright.van#qq.com)
-
-感谢大家，希望一起起步。
 
 ------
 
