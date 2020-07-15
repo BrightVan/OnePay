@@ -72,7 +72,7 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
 
         if (mWXApi == null) {
             mWXApi = WXAPIFactory.createWXAPI(activity.getApplicationContext(), payInfoEntity.appId);
-            //mWXApi.registerApp(payInfoEntity.appId);
+            mWXApi.registerApp(payInfoEntity.appId);
         }
 
         if (!check()) {

@@ -30,7 +30,7 @@ allprojects {
 //required - 必选
 implementation 'com.pay.one:core:0.1.2'
 //optional - 微信支付模块
-implementation 'com.pay.one:wechat:0.1.3'
+implementation 'com.pay.one:wechat:0.1.4'
 //optional - 支付宝模块
 implementation 'com.pay.one:alipay:0.1.0'
 //optional - 银联支付(未测试)
@@ -195,6 +195,8 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 ------
 
 ## (ChangeLog) 更新日志
+#### 0.1.4
+- 微信模块，添加registerApp代码
 #### 0.1.3
 - 微信模块，内部处理内存泄露问题，移除releasePayCallback方法，无需手动处理。
 #### 0.1.2
