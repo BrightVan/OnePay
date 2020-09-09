@@ -11,6 +11,7 @@
 package com.pay.one.wechat;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.pay.one.core.IPayResultHandler;
 import com.tencent.mm.opensdk.constants.Build;
@@ -31,7 +32,6 @@ import com.pay.one.core.IPayCallback;
  * @see <a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=1417751808&token=&lang=zh_CN">Des</a>
  */
 public class WXPay implements IPayStrategy<WXPayEntity> {
-    private static WXPay mWXPay;
     private WXPayEntity payInfoEntity;
     private IPayCallback sPayCallback;
     private IWXAPI mWXApi;
@@ -40,16 +40,18 @@ public class WXPay implements IPayStrategy<WXPayEntity> {
     private WXPay() {
     }
 
-    //这里之所以单利模式，是为了
     public static WXPay getInstance() {
-        if (mWXPay == null) {
-            synchronized (WXPay.class) {
-                if (mWXPay == null) {
-                    mWXPay = new WXPay();
-                }
-            }
+        return SingletonHolder.instance;
+    }
+
+    private static class SingletonHolder {
+        private static WXPay instance = new WXPay();
+    }
+
+    public void initWXApi(Context context, String wxAppId) {
+        if (mWXApi == null) {
+            mWXApi = WXAPIFactory.createWXAPI(context.getApplicationContext(), wxAppId);
         }
-        return mWXPay;
     }
 
     public IWXAPI getWXApi() {

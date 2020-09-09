@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 /**
@@ -17,14 +18,21 @@ public class WXPayActivity extends Activity implements IWXAPIEventHandler {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WXPay.getInstance().getWXApi().handleIntent(getIntent(), this);
+        handleIntent(getIntent());
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        WXPay.getInstance().getWXApi().handleIntent(intent, this);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        IWXAPI iwxapi = WXPay.getInstance().getWXApi();
+        if (iwxapi != null) {
+            iwxapi.handleIntent(intent, this);
+        }
     }
 
     @Override

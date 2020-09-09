@@ -195,6 +195,8 @@ public class XXPay implements IPayStrategy<XXpayInfoImpli> {
 ------
 
 ## (ChangeLog) 更新日志
+#### 0.1.5
+- 微信模块，WXPayActivity加入判空，防止空指针奔溃。WXPay加入initWXApi方法。
 #### 0.1.4
 - 微信模块，添加registerApp代码
 #### 0.1.3
